@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #board {
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .square {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+        }
+        .white {
+            background-color: #fff;
+        }
+        .black {
+            background-color: #000;
+            color: #fff;
+        }
+        .circle {
+            width: 40px;
+            height: 40px;
+            background-color: grey;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        input[type="number"] {
+            width: 94px;
+            text-align: center;
+        }
+        #generateButton {
+            margin-top: 10px;
+        }
+    </style>
+    <title>N-Queens</title>
+    <!-- Made by Stijn Rotman -->
+</head>
+<body>
+    <div id="controls">
+        <label for="boardSize">Board Size: </label>
+        <input type="number" id="boardSize" min="4" max="10" value="4">
+        <button id="generateButton" onclick="createChessboard()">Generate Board</button>
+    </div>
+    <div id="board"></div>
+    <div id="costDisplay">Attacking queens: <span id="costValue">0</span></div>
+    <div id="costDisplay">Non-attacking queens: <span id="utilityValue">0</span></div>
+
+    <script>
+        let boardSize = parseInt(document.getElementById("boardSize").value);
+        let queensInColumns = new Array(boardSize).fill(boardSize - 1);
+        let maxCost = 0;
+        function createChessboard() {
+            boardSize = parseInt(document.getElementById("boardSize").value);
+            queensInColumns = new Array(boardSize).fill(boardSize - 1);
+            const board = document.getElementById("board");
+            board.innerHTML = "";
+
+            // Create number pickers for queen placement
+            const queenPickers = document.createElement("div");
+            queenPickers.id = "queenPickers";
+            for (let col = 0; col < boardSize; col++) {
+                const picker = document.createElement("input");
+                picker.type = "number";
+                picker.min = "1";
+                picker.max = (boardSize).toString();
+                picker.value = "1";
+                picker.addEventListener("input", () => updateQueenPlacement(col, boardSize - parseInt(picker.value)));
+                queenPickers.appendChild(picker);
+            }
+            board.appendChild(queenPickers);
+
+            // Create the chessboard and place queens initially in the specified rows
+            for (let row = 0; row < boardSize; row++) {
+                for (let col = 0; col < boardSize; col++) {
+                    const square = document.createElement("div");
+                    square.className = `square ${row % 2 === col % 2 ? 'white' : 'black'}`;
+                    square.dataset.row = row;
+                    square.dataset.col = col;
+
+                    // Place a queen in the specified row for each column
+                    if (row === queensInColumns[col]) {
+                        const circle = document.createElement("div");
+                        circle.className = "circle";
+                        square.appendChild(circle);
+                    }
+
+                    board.appendChild(square);
+                }
+                board.appendChild(document.createElement("br"));
+            }
+            // Update and display the cost
+            updateCost(queensInColumns.join(""), true);
+        }
+
+        function getCost(state) {
+            let cost = 0;
+
+            for (let i = 0; i < state.length; i++) {
+                for (let j = i + 1; j < state.length; j++) {
+                    // Queens are on the same row
+                    if (state[i] === state[j]) {
+                        cost += 1;
+                    }
+                    // Queens are on the same diagonal
+                    if (Math.abs(i - j) === Math.abs(parseInt(state[i]) - parseInt(state[j]))) {
+                        cost += 1;
+                    }
+                }
+            }
+
+            return cost;
+        }
+
+        function updateQueenPlacement(col, selectedRow) {
+            queensInColumns[col] = selectedRow;
+
+            // Clear queens from the entire board
+            const existingQueens = document.querySelectorAll(".circle");
+            existingQueens.forEach((queen) => {
+                queen.parentNode.removeChild(queen);
+            });
+
+            // Place queens in the specified rows for each column
+            for (let col = 0; col < boardSize; col++) {
+                const selectedRow = queensInColumns[col];
+                const square = document.querySelector(`.square[data-row="${selectedRow}"][data-col="${col}"]`);
+                const circle = document.createElement("div");
+                circle.className = "circle";
+                square.appendChild(circle);
+            }
+
+            // Update and display the cost
+            const state = queensInColumns.join("");
+            updateCost(state);
+        }
+
+        function updateCost(state, updateMax=false) {
+            let cost = getCost(state);
+            if (updateMax) {
+                maxCost = cost;
+            }
+            document.getElementById("costValue").textContent = cost;
+            document.getElementById("utilityValue").textContent = maxCost - cost;
+        }
+
+        // Initial chessboard creation
+        createChessboard();
+    </script>
+</body>
+</html>
