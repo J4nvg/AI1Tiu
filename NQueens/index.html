@@ -19,8 +19,10 @@
             margin-top: 20px;
         }
         .square {
-            width: 100px;
-            height: 100px;
+            width: 10vw;
+            height: 10vw;
+            max-width: 100px;
+            max-height: 100px;
             border: 1px solid #ccc;
             display: inline-block;
             text-align: center;
@@ -37,8 +39,8 @@
             color: #fff;
         }
         .circle {
-            width: 40px;
-            height: 40px;
+            width: 40%;
+            height: 40%;
             background-color: grey;
             border-radius: 50%;
             position: absolute;
@@ -50,6 +52,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
             margin-bottom: 20px;
         }
         label {
@@ -57,11 +60,31 @@
             margin-right: 10px;
         }
         input[type="number"] {
-            width: 94px;
+            width: 50px;
             text-align: center;
+            margin-bottom: 10px;
         }
         #generateButton {
             margin-top: 10px;
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+    
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .square {
+                width: 15vw;
+                height: 15vw;
+                max-width: 70px;
+                max-height: 70px;
+            }
+            input[type="number"] {
+                width: 40px;
+            }
+            #generateButton {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
         }
     </style>
     <title>N-Queens</title>
@@ -73,7 +96,7 @@
         <input type="number" id="boardSize" min="4" max="10" value="4">
         <button id="generateButton" onclick="createChessboard()">Generate Board</button>
     </div>
-    <div id="board"></div>
+    <div id="board" style="width: 100%;"></div>
     <div id="costDisplay">Attacking queens: <span id="costValue">0</span></div>
     <div id="costDisplay">Non-attacking queens: <span id="utilityValue">0</span></div>
 
