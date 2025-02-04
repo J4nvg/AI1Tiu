@@ -13,6 +13,8 @@
     let state = { gamblers: 3, robbers: 3, boatSide: 1 };
     const initialState = { gamblers: 3, robbers: 3, boatSide: 1 };
     const goalState = { gamblers: 0, robbers: 0, boatSide: 0 };
+    let lastHistoryRow = null;
+
 
     // Keep track of move count
     let moveIndex = 0;
@@ -61,7 +63,7 @@
         document.getElementById('initSideh2').style.color = inactiveSecondary;
         document.getElementById('goalSideh2').style.color = "black";
 
-        
+
         document.getElementById('initSide').style.boxShadow = "";
         document.getElementById('goalSide').style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
       }
@@ -81,39 +83,72 @@
 
     function addHistory(before, action, after) {
       const tbody = document.querySelector('#history-table tbody');
-      const row = document.createElement('tr');
-
-      // Move index cell
-      const nrCell = document.createElement('td');
-      // If you want first entry to be #1, use ++moveIndex instead of moveIndex++
-      nrCell.textContent = ++moveIndex;
-
-      // Before cell
-      const beforeCell = document.createElement('td');
-      beforeCell.textContent = `(${before.gamblers}, ${before.robbers}, ${before.boatSide})`;
-
-      // Action cell
-      const actionCell = document.createElement('td');
-      actionCell.textContent = `(${action.gamblers}, ${action.robbers})`;
-
-      row.appendChild(nrCell);
-      row.appendChild(beforeCell);
-      row.appendChild(actionCell);
-      // row.appendChild(afterCell);
-      tbody.appendChild(row);
+    
+      // If no row has been logged yet, create the initial state row.
+      if (!lastHistoryRow) {
+        lastHistoryRow = document.createElement('tr');
+    
+        // First cell: move number (0 for the initial state)
+        const moveCell = document.createElement('td');
+        moveCell.textContent = 0;
+        lastHistoryRow.appendChild(moveCell);
+    
+        // Second cell: the initial state
+        const stateCell = document.createElement('td');
+        stateCell.innerHTML = `(${before.gamblers}, ${before.robbers}, ${before.boatSide})`;
+        lastHistoryRow.appendChild(stateCell);
+    
+        // Third cell: action (empty for the initial row)
+        const actionCell = document.createElement('td');
+        actionCell.innerHTML = "";
+        lastHistoryRow.appendChild(actionCell);
+    
+        tbody.appendChild(lastHistoryRow);
+      }
+    
+      // Update the action cell of the current (last) row.
+      // This puts the action in the third column.
+      lastHistoryRow.cells[2].innerHTML = `(${action.gamblers}, ${action.robbers})`;
+    
+      // Create a new row for the new state (result of the move)
+      const newRow = document.createElement('tr');
+    
+      // Move number cell (incremented move number)
+      const newMoveCell = document.createElement('td');
+      newMoveCell.textContent = moveIndex + 1;
+      newRow.appendChild(newMoveCell);
+    
+      // State cell: new state information
+      const newStateCell = document.createElement('td');
+      newStateCell.innerHTML = `(${after.gamblers}, ${after.robbers}, ${after.boatSide})`;
+      newRow.appendChild(newStateCell);
+    
+      // Action cell: initially empty (to be filled on the next move)
+      const newActionCell = document.createElement('td');
+      newActionCell.innerHTML = "";
+      newRow.appendChild(newActionCell);
+    
+      tbody.appendChild(newRow);
+    
+      // Update move counter and record this new row as the last row
+      moveIndex++;
+      lastHistoryRow = newRow;
     }
 
     function resetGame() {
       state = { ...initialState };
-      moveIndex = 0; // reset the move counter
-
+      moveIndex = 0;
+      lastHistoryRow = null; // Reset our pointer
+      
       document.getElementById('gamblers').value = "";
       document.getElementById('robbers').value = "";
       document.querySelector('#history-table tbody').innerHTML = "";
-
+      
       updateDisplay();
       document.getElementById('move-btn').disabled = true;
     }
+    
+    
 
     document.addEventListener('DOMContentLoaded', () => {
       updateDisplay();
@@ -191,6 +226,7 @@
 
         // Check goal
         if (state.gamblers === 0 && state.robbers === 0 && state.boatSide === 0) {
+          state = goalState;
           alert(`Congratulations! You solved the problem with ${moveIndex} actions.`);
         }
       });
