@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gamblers and Robbers River Crossing</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    @media screen and (max-width: 600px) {
+  .state-display {
+    flex-direction: column;
+    align-items: center;
+  }
+  .side {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+}
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>Gamblers and Robbers River Crossing</h1>
+    <div class="state-display">
+      <div class="side">
+        <h2>Initial Side</h2>
+        <div class="people">
+          <span class="gamblers">Gamblers: <span id="initial-gamblers">3</span></span>
+          <span class="robbers">Robbers: <span id="initial-robbers">3</span></span>
+          <span class="boat" id="initial-boat">🚢</span>
+        </div>
+      </div>
+      <div class="side">
+        <h2>Goal Side</h2>
+        <div class="people">
+          <span class="gamblers">Gamblers: <span id="goal-gamblers">0</span></span>
+          <span class="robbers">Robbers: <span id="goal-robbers">0</span></span>
+          <span class="boat" id="goal-boat"></span>
+        </div>
+      </div>
+    </div>
+    <div class="move-controls">
+      <div class="input-group">
+        <label for="gamblers">Gamblers:</label>
+        <input type="number" id="gamblers" min="0" max="3" value="">
+      </div>
+      <div class="input-group">
+        <label for="robbers">Robbers:</label>
+        <input type="number" id="robbers" min="0" max="3" value="">
+      </div>
+      <button id="move-btn" disabled>Move</button>
+    </div>
+    <button id="reset-btn">Reset</button>
+    <div class="history">
+      <h3>Move History</h3>
+      <table id="history-table">
+        <thead>
+          <tr>
+            <th>nr</th>
+            <th>Before State</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>
