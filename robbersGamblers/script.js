@@ -1,3 +1,14 @@
+    /************************ 
+     * Whatsup coder; 
+     * Originally wrote this in react,
+     * but made Gpt3o translate it to vanilla JS.
+     * 
+     * - Jan van Gestel'
+     * 
+     * Also, join Enigma:
+     * https://www.saenigma.com/
+    **************************/
+    
     // Initial state
     let state = { gamblers: 3, robbers: 3, boatSide: 1 };
     const initialState = { gamblers: 3, robbers: 3, boatSide: 1 };
