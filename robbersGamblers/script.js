@@ -54,13 +54,13 @@
       actionCell.textContent = `(${action.gamblers}, ${action.robbers})`;
 
       // After cell
-      const afterCell = document.createElement('td');
-      afterCell.textContent = `(${after.gamblers}, ${after.robbers}, ${after.boatSide})`;
+      // const afterCell = document.createElement('td');
+      // afterCell.textContent = `(${after.gamblers}, ${after.robbers}, ${after.boatSide})`;
 
       row.appendChild(nrCell);
       row.appendChild(beforeCell);
       row.appendChild(actionCell);
-      row.appendChild(afterCell);
+      // row.appendChild(afterCell);
       tbody.appendChild(row);
     }
 
