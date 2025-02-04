@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gamblers and Robbers River Crossing</title>
+  <title>Gamblers and Robbers</title>
   <link rel="stylesheet" href="styles.css">
 
   <style>
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 768px) {
   .state-display {
     flex-direction: column;
     align-items: center;
@@ -16,26 +16,35 @@
     width: 90%;
     margin-bottom: 20px;
   }
+  .side:nth-child(2) {
+  margin-left:0;
+}
 }
   </style>
 </head>
 <body>
   <div id="app">
-    <h1>Gamblers and Robbers River Crossing</h1>
+    <h1>Gamblers and Robbers</h1>
+    <p>
+      On one side of a river, there are three gamblers and three robbers. They both want to
+travel to the other side. However, there is only <b>one boat</b> that can hold up to <b>two
+people</b>. <i>If the robbers outnumber the gamblers, they will rob them</i>. What sequence of
+actions would result in all the gamblers and robbers crossing to the other side of the
+river?</p>
     <div class="state-display">
-      <div class="side">
-        <h2>Initial Side</h2>
+      <div class="side" id ="initSide">
+        <h2 id="initSideh2">Initial Side</h2>
         <div class="people">
-          <span class="gamblers">Gamblers: <span id="initial-gamblers">3</span></span>
-          <span class="robbers">Robbers: <span id="initial-robbers">3</span></span>
-          <span class="boat" id="initial-boat">🚢</span>
+          <span id="initTextAccessG" class="gamblers">Gamblers: <span id="initial-gamblers">3</span></span>
+          <span id="initTextAccessR" class="robbers">Robbers: <span id="initial-robbers">3</span></span>
+          <span class="boat" id="initial-boat">⛵</span>
         </div>
       </div>
-      <div class="side">
-        <h2>Goal Side</h2>
+      <div class="side" id ="goalSide">
+        <h2 id="goalSideh2">Goal Side</h2>
         <div class="people">
-          <span class="gamblers">Gamblers: <span id="goal-gamblers">0</span></span>
-          <span class="robbers">Robbers: <span id="goal-robbers">0</span></span>
+          <span id="goalTextAccessG" class="gamblers">Gamblers: <span id="goal-gamblers">0</span></span>
+          <span id="goalTextAccessR" class="robbers">Robbers: <span id="goal-robbers">0</span></span>
           <span class="boat" id="goal-boat"></span>
         </div>
       </div>
@@ -57,8 +66,8 @@
       <table id="history-table">
         <thead>
           <tr>
-            <th>nr</th>
-            <th>Before State</th>
+            <th>#</th>
+            <th>State</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -67,5 +76,6 @@
     </div>
   </div>
   <script src="./script.js"></script>
+  <p style="font-size:small"><i>This visualization was made as a (unofficial) tool for the AI1 practical.</i></p>
 </body>
 </html>

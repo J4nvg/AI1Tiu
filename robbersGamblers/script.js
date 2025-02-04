@@ -3,7 +3,7 @@
      * Originally wrote this in react,
      * but made Gpt3o translate it to vanilla JS.
      * 
-     * - Jan van Gestel'
+     * - Jan van Gestel; Jan '25
      * 
      * Also, join Enigma:
      * https://www.saenigma.com/
@@ -17,9 +17,12 @@
     // Keep track of move count
     let moveIndex = 0;
 
+    const inactivePrimary = "#475569" 
+    const inactiveSecondary = "#64748b" 
+
     function updateDisplay() {
       // Update left side
-      document.getElementById('initial-gamblers').textContent = state.gamblers;
+      document.getElementById('initial-gamblers').textContent = state.gamblers ;
       document.getElementById('initial-robbers').textContent = state.robbers;
       // Update right side
       document.getElementById('goal-gamblers').textContent = 3 - state.gamblers;
@@ -27,11 +30,40 @@
 
       // Show the boat on the correct side
       if (state.boatSide === 1) {
-        document.getElementById('initial-boat').textContent = "🚢";
+        document.getElementById('initial-boat').textContent = "⛵";
         document.getElementById('goal-boat').textContent = "";
+        document.getElementById('goalSide').style.backgroundColor = inactivePrimary;
+        document.getElementById('initSide').style.backgroundColor = "#fff";
+
+
+        document.getElementById('initTextAccessG').style.color = "blue";
+        document.getElementById('initTextAccessR').style.color = "red";
+        document.getElementById('goalTextAccessG').style.color = inactiveSecondary;
+        document.getElementById('goalTextAccessR').style.color = inactiveSecondary;
+        document.getElementById('initSideh2').style.color = "black";
+        document.getElementById('goalSideh2').style.color = inactiveSecondary;
+
+
+
+        document.getElementById('initSide').style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
+        document.getElementById('goalSide').style.boxShadow = "";
       } else {
         document.getElementById('initial-boat').textContent = "";
-        document.getElementById('goal-boat').textContent = "🚢";
+        document.getElementById('goal-boat').textContent = "⛵";
+        document.getElementById('goalSide').style.backgroundColor = "#fff";
+
+
+        document.getElementById('initSide').style.backgroundColor = inactivePrimary;
+        document.getElementById('initTextAccessG').style.color = inactiveSecondary;
+        document.getElementById('initTextAccessR').style.color = inactiveSecondary;
+        document.getElementById('goalTextAccessG').style.color = "blue";
+        document.getElementById('goalTextAccessR').style.color = "red";
+        document.getElementById('initSideh2').style.color = inactiveSecondary;
+        document.getElementById('goalSideh2').style.color = "black";
+
+        
+        document.getElementById('initSide').style.boxShadow = "";
+        document.getElementById('goalSide').style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
       }
     }
 
@@ -63,10 +95,6 @@
       // Action cell
       const actionCell = document.createElement('td');
       actionCell.textContent = `(${action.gamblers}, ${action.robbers})`;
-
-      // After cell
-      // const afterCell = document.createElement('td');
-      // afterCell.textContent = `(${after.gamblers}, ${after.robbers}, ${after.boatSide})`;
 
       row.appendChild(nrCell);
       row.appendChild(beforeCell);
@@ -163,7 +191,7 @@
 
         // Check goal
         if (state.gamblers === 0 && state.robbers === 0 && state.boatSide === 0) {
-          alert("Congratulations! You solved the puzzle.");
+          alert(`Congratulations! You solved the problem with ${moveIndex} actions.`);
         }
       });
 
